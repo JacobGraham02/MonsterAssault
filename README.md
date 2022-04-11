@@ -37,5 +37,5 @@ Currently, I am not accepting any pull requests or other contributions to this r
 or rejected. 
 
 ### <a name="credits" title="The original creator(s) of this game application">The creator(s) of this game</a>
-Jacob Graham
-Gary Graham
+Jacob Graham<br/>
+Gary Graham<br/>
