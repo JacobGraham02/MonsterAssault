@@ -18,7 +18,12 @@ TODO
 TODO
 
 ### <a name="technologies_used" title="The technologies used to make this game">The technologies used to create this mobile game</a>
-TODO
+<ul>
+  <li>Android Studio Bumblebee | 2021.1.1 Patch 3</li>
+  <li>Java 11. This Java version has the most features after JDK (Java Development Kit) 8, and is the 2nd most popular after the same as well.</li>
+  <li>LibGDX. This is a popular framework used specifically for Android and Desktop games created with Java.</li>
+  <li>Figma. This is a popular UI/UX design tool used for wireframes, mockups, and other UI elements.</li>
+</ul>
 
 ### <a name="where_to_download" title="Where to download this app from the Google Play Store">Where to download this game from the Google Play Store</a>
 TODO
@@ -37,5 +42,7 @@ Currently, I am not accepting any pull requests or other contributions to this r
 or rejected. 
 
 ### <a name="credits" title="The original creator(s) of this game application">The creator(s) of this game</a>
-Jacob Graham<br/>
-Gary Graham<br/>
+<ul>
+  <li>Jacob Graham</li>
+  <li>Gary Graham</li>
+</ul>
