@@ -1,16 +1,18 @@
 # JavaMobileGame
 
 ### Table of contents
-[Game description](#game_description)<br/>
-[Game goal](#game_goal)<br/>
-[Technologies used](#technologies_used)<br/>
-[Where to download from Google Play Store](#where_to_download)<br/>
-[Installing on Windows](#windows_installation)<br/>
-[Installing on MacOS](#macos_installation)<br/>
-[Installing on Linux](#linux_installation)<br/>
-[Note about contributing](#contributing)<br/>
-[Credits](#credits)<br/>
-
+<ul>
+  <li>[Game description](#game_description)<br/></li>
+  <li>[Game goal](#game_goal)<br/></li>
+  <li>[Technologies used](#technologies_used)<br/></li>
+  <li>[Where to download from Google Play Store](#where_to_download)<br/></li>
+  <li>[Installing on Windows](#windows_installation)<br/></li>
+  <li>[Installing on MacOS](#macos_installation)<br/></li>
+  <li>[Installing on Linux](#linux_installation)<br/></li>
+  <li>[Note about contributing](#contributing)<br/></li>
+  <li>[Credits](#credits)</li>
+</ul><br/>
+  
 ### <a name="game_description" title="Game description">Game description</a>
 TODO
 
