@@ -1,0 +1,38 @@
+https://www.crazylabs.com/blog_posts/must-have-of-level-design/
+https://www.reddit.com/r/gamedev/comments/7g4a07/how_to_design_an_infinite_game/
+
+MonsterAssault 1 will be aimed at attracting strictly casual players because of my inexperience with making mobile games. Games
+which attract casual players are easier to make than if you were trying to attract competitive players. 
+
+When the app first loads, there will be an option to either login to an account for cloud account storage and other functions.
+Both Google and Email logins will be supported. Obviously, the option remains to play without logging in, and stores your data 
+locally.
+
+Try to keep game options similar to those available on other apps because of users existing familiarity with them. 
+Main application menu (not in chronological order; design the ordering of options later):
+	(Tutorial) How to play
+	Options
+	Start new game - Bring up warning that user will start again from level 0 and overwrite all of their data with defaults 
+	Continue on existing game - Can only be used if the user has a currently existing game
+	
+For device orientation when on the app, only allow users to flip their device horizontally, not vertically. 
+
+Try to make a birds-eye view type game so users can have a more engaging experience.
+
+Do not put ads or in-app purchases in the first iteration of the game because this is a test app.
+
+All of the map asset images will be drawn using a UI tool like Figma or Photoshop. These images will be binded to a class to be
+dynamically loaded onto the game grid.
+
+All of the character images will be drawn and implemented similarly to the map asset images. 
+
+Find free game sounds from online somewhere. 
+
+When the device is oriented horizontally there will be a control on the left side of the screen to move in 4 directions, 
+or diagonally. On the right side of the screen, there will be a control to use your equipped weapon. If this is required, there
+will also be an action on the right side of the screen to perform some action interacting with the world (E.g. opening a door).
+
+When starting the next level, give players an option to enable the functionality for skipping the level, along with an input
+for how many times they want to die before being presented the option to skip the current level. By default, this is 3. 
+
+
