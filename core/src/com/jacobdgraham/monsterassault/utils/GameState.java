@@ -15,6 +15,7 @@ import com.jacobdgraham.monsterassault.MonsterAssault;
 import com.jacobdgraham.monsterassault.entity.Bullet;
 import com.jacobdgraham.monsterassault.entity.Enemy;
 import com.jacobdgraham.monsterassault.entity.Player;
+import com.jacobdgraham.monsterassault.event.RoundData;
 import com.jacobdgraham.monsterassault.pathfinding.AStarPathFinder;
 import com.jacobdgraham.monsterassault.screen.GameScreen;
 
@@ -49,6 +50,8 @@ public class GameState {
 
     private final ClickListener pauseMenuClickListener;
 
+    private final RoundData roundData;
+
     private MonsterAssault monsterAssault;
 
     private boolean stateCanBeLoaded = false;
@@ -74,6 +77,7 @@ public class GameState {
                 monsterAssault.setGamePaused(true);
             }
         };
+        this.roundData = gameScreen.roundData;
         stateCanBeLoaded = true;
     }
 
@@ -92,6 +96,7 @@ public class GameState {
         gameScreen.bullets = this.bullets;
         gameScreen.bulletsIterator = this.bulletsIterator;
         gameScreen.pauseMenuButton = pauseMenuButton;
+        gameScreen.roundData = roundData;
         gameScreen.pauseMenuButton.addListener(pauseMenuClickListener);
     }
 

@@ -18,6 +18,7 @@ import com.jacobdgraham.monsterassault.MonsterAssault;
 public class PauseGameScreen implements Screen {
     private final MonsterAssault monsterAssault;
     private Stage pauseStage;
+
     private boolean gamePaused = false;
     private Texture backgroundTexture;
     private Drawable buttonDrawable;

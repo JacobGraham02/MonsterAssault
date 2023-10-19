@@ -90,17 +90,25 @@ public class GameScreen extends ScreenAdapter implements Screen {
     }
 
     public void show() {
+        stage = new Stage(new ScreenViewport());
+        Texture pauseMenuButtonImage = new Texture("PauseMenuButton.png");
+        final Drawable buttonDrawable = new TextureRegionDrawable(new TextureRegion(pauseMenuButtonImage));
+        pauseMenuButton = new ImageButton(buttonDrawable);
+        pauseMenuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                monsterAssault.setGamePaused(true);
+            }
+        });
         if (gameState != null && gameState.getIfValidSavedGameState()) {
             gameState.loadState(this);
+            return;
         }
         playerTexture = new Texture("PlayerLookingNorth.png");
         bulletTexture = new Texture("Bullet.png");
-        Texture pauseMenuButtonImage = new Texture("PauseMenuButton.png");
-        final Texture backgroundTexture = new Texture(Gdx.files.internal("SASZombieAssault.png"));
         tiledMap = new TmxMapLoader().load("MapBuilding.tmx");
         orthogonalTiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("CollisionLayer");
-        final Drawable buttonDrawable = new TextureRegionDrawable(new TextureRegion(pauseMenuButtonImage));
         enemiesLeftLabelFont = new BitmapFont();
         currentRoundLabelFont = new BitmapFont();
         BitmapFont playerHealthLabelFont = new BitmapFont();
@@ -110,7 +118,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
         final String initialEnemiesLeftButtonText = "Enemies left: 0";
         final String initialCurrentRoundButtonText = "Round: 0";
         final String initialPlayerHealthLabelText = "Health: 0";
-        stage = new Stage(new ScreenViewport());
         roundManager = new RoundManager();
         enemiesLeftLabel = new Label(initialEnemiesLeftButtonText + enemies.size, enemiesLeftLabelStyle);
         currentRoundLabel = new Label(initialCurrentRoundButtonText, currentRoundLabelStyle);
@@ -119,7 +126,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
         musicAndSoundManager = MusicAndSoundManager.getInstance();
         musicAndSoundManager.play();
 
-        pauseMenuButton = new ImageButton(buttonDrawable);
         pathfinder = new AStarPathFinder(tiledMap);
         camera = new OrthographicCamera();
         batch = new SpriteBatch();
@@ -134,12 +140,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
         roundData = roundManager.changeRound();
 
         player = new Player(playerTexture,middleOfScreenX/3,middleOfScreenY,32, 32);
-        pauseMenuButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                monsterAssault.setGamePaused(true);
-            }
-        });
 
         Table topRowLabelTable = new Table();
         topRowLabelTable.setWidth(Gdx.graphics.getWidth());
@@ -210,6 +210,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
 
         if (!shouldPlayerMove && Gdx.input.justTouched()) {
             displayPlayerShotBullet();
+            musicAndSoundManager.playBulletShootSound();
         }
 
         if (player.getHealth() <= 0) {
@@ -253,6 +254,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
                 if (bulletBounds.overlaps(enemyBounds)) {
                     enemy.takeDamage(bullet.getDamage());
                     bulletsIterator.remove();
+                    musicAndSoundManager.playBulletHitSound();
                     break; // Break the loop after hitting the first enemy
                 }
             }
@@ -273,6 +275,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
         roundData = roundManager.changeRound();
         final int currentRound = roundData.getCurrentRound();
         currentRoundLabel.setText("Round " + currentRound);
+        musicAndSoundManager.playRoundChangeRound();
     }
 
     private void updateEnemiesLabel() {
