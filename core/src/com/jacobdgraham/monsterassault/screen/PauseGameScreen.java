@@ -35,7 +35,7 @@ public class PauseGameScreen implements Screen {
         pauseMenuBackground.setFillParent(true);
         pauseMenuBackground.setColor(1,1,1,0.7f);
 
-        backgroundTexture = new Texture(Gdx.files.internal("ShopIcon.png"));
+        backgroundTexture = new Texture(Gdx.files.internal("BackButton.png"));
         buttonDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
         resumeButton = new ImageButton(buttonDrawable);
         resumeButton.setPosition(pauseStage.getWidth()/2,pauseStage.getHeight()/2);

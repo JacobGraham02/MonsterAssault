@@ -22,32 +22,32 @@ import java.util.Iterator;
 
 public class GameState {
 
-    private Enemy enemy;
-    private Player player;
-    private TiledMap tiledMap;
-    private TiledMapTileLayer collisionLayer;
+    private final Enemy enemy;
+    private final Player player;
+    private final TiledMap tiledMap;
+    private final TiledMapTileLayer collisionLayer;
 
-    private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
+    private final OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
 
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
 
-    private OrthographicCamera orthographicCamera;
+    private final OrthographicCamera orthographicCamera;
 
-    private AStarPathFinder dijkstraPathfinder;
+    private final AStarPathFinder dijkstraPathfinder;
 
-    private Stage stage;
+    private final Stage stage;
 
-    private Texture playerTexture;
+    private final Texture playerTexture;
 
-    private Texture bulletTexture;
+    private final Texture bulletTexture;
 
-    private Array<Bullet> bullets;
+    private final Array<Bullet> bullets;
 
-    private Iterator<Bullet> bulletsIterator;
+    private final Iterator<Bullet> bulletsIterator;
 
-    private ImageButton pauseMenuButton;
+    private final ImageButton pauseMenuButton;
 
-    private ClickListener pauseMenuClickListener;
+    private final ClickListener pauseMenuClickListener;
 
     private MonsterAssault monsterAssault;
 

@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.jacobdgraham.monsterassault.MonsterAssault;
+import com.jacobdgraham.monsterassault.utils.MusicAndSoundManager;
 import com.jacobdgraham.monsterassault.utils.Transition;
 
 public class MainMenuScreen extends ScreenAdapter implements Screen {
@@ -26,6 +27,7 @@ public class MainMenuScreen extends ScreenAdapter implements Screen {
     private final SpriteBatch batch;
     private final MonsterAssault monsterAssault;
     private Stage stage;
+    private MusicAndSoundManager musicAndSoundManager;
 
     public MainMenuScreen(MonsterAssault monsterAssaultScreen) {
         camera = new OrthographicCamera();
@@ -38,6 +40,9 @@ public class MainMenuScreen extends ScreenAdapter implements Screen {
     public void show() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+
+        musicAndSoundManager = MusicAndSoundManager.getInstance();
+        musicAndSoundManager.play();
 
         final Texture backgroundTexture = new Texture(Gdx.files.internal("SASZombieAssault.png"));
         final Image backgroundImage = new Image(backgroundTexture);
@@ -104,11 +109,12 @@ public class MainMenuScreen extends ScreenAdapter implements Screen {
 
     @Override
     public void hide() {
-        dispose();
+        musicAndSoundManager.pause();
     }
 
     @Override
     public void dispose() {
+        musicAndSoundManager.dispose();
         batch.dispose();
         stage.dispose();
         Gdx.input.setInputProcessor(null);

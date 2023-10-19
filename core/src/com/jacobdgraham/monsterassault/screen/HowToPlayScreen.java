@@ -26,6 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.jacobdgraham.monsterassault.MonsterAssault;
+import com.jacobdgraham.monsterassault.utils.MusicAndSoundManager;
 
 public class HowToPlayScreen implements Screen {
 
@@ -45,7 +46,10 @@ public class HowToPlayScreen implements Screen {
     private Label roundProgressionSystemLabel;
 
     private Label futureUpdatesLabel;
+
     private ScrollPane scrollPane;
+
+    private MusicAndSoundManager musicAndSoundManager;
     public HowToPlayScreen(MonsterAssault monsterAssaultScreen) {
         monsterAssault = monsterAssaultScreen;
     }
@@ -55,11 +59,15 @@ public class HowToPlayScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         scrollPane = new ScrollPane(null);
         Gdx.input.setInputProcessor(stage);
+        musicAndSoundManager = MusicAndSoundManager.getInstance();
         scrollPane.setSize(Gdx.graphics.getWidth()/2.0f, Gdx.graphics.getHeight() / 2.0f);
         scrollPane.setPosition(Gdx.graphics.getWidth()/2.0f, Gdx.graphics.getHeight()/4.0f);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch = new SpriteBatch();
+
+        musicAndSoundManager = MusicAndSoundManager.getInstance();
+        musicAndSoundManager.play();
 
         final Texture backgroundTexture = new Texture(Gdx.files.internal("SASZombieAssault.png"));
         final Image backgroundImage = new Image(backgroundTexture);
@@ -167,11 +175,12 @@ public class HowToPlayScreen implements Screen {
 
     @Override
     public void hide() {
-        dispose();
+        musicAndSoundManager.pause();
     }
 
     @Override
     public void dispose() {
+        musicAndSoundManager.dispose();
         howToPlayBitmapFont.dispose();
         batch.dispose();
         stage.dispose();

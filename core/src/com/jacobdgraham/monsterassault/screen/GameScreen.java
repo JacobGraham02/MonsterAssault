@@ -3,6 +3,7 @@ package com.jacobdgraham.monsterassault.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -38,6 +39,7 @@ import com.jacobdgraham.monsterassault.event.RoundManager;
 import com.jacobdgraham.monsterassault.pathfinding.AStarNode;
 import com.jacobdgraham.monsterassault.pathfinding.AStarPathFinder;
 import com.jacobdgraham.monsterassault.utils.GameState;
+import com.jacobdgraham.monsterassault.utils.MusicAndSoundManager;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -76,6 +78,9 @@ public class GameScreen extends ScreenAdapter implements Screen {
     private boolean shouldPlayerMove = false;
     private float touchStartTime = 0;
 
+    private MusicAndSoundManager musicAndSoundManager;
+
+
     public GameScreen(MonsterAssault monsterAssault) {
         this.monsterAssault = monsterAssault;
         this.pauseGameScreen = new PauseGameScreen(monsterAssault);
@@ -110,6 +115,9 @@ public class GameScreen extends ScreenAdapter implements Screen {
         enemiesLeftLabel = new Label(initialEnemiesLeftButtonText + enemies.size, enemiesLeftLabelStyle);
         currentRoundLabel = new Label(initialCurrentRoundButtonText, currentRoundLabelStyle);
         playerHealthLabel = new Label(initialPlayerHealthLabelText, playerHealthLabelStyle);
+
+        musicAndSoundManager = MusicAndSoundManager.getInstance();
+        musicAndSoundManager.play();
 
         pauseMenuButton = new ImageButton(buttonDrawable);
         pathfinder = new AStarPathFinder(tiledMap);
@@ -403,6 +411,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
 
     @Override
     public void hide() {
+        musicAndSoundManager.pause();
         gameState = new GameState(this);
     }
 

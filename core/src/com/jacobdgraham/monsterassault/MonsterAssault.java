@@ -3,6 +3,7 @@ package com.jacobdgraham.monsterassault;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jacobdgraham.monsterassault.screen.GameOverDiedScreen;
@@ -11,6 +12,7 @@ import com.jacobdgraham.monsterassault.screen.GameScreen;
 import com.jacobdgraham.monsterassault.screen.HowToPlayScreen;
 import com.jacobdgraham.monsterassault.screen.MainMenuScreen;
 import com.jacobdgraham.monsterassault.screen.PauseGameScreen;
+import com.jacobdgraham.monsterassault.utils.MusicAndSoundManager;
 import com.jacobdgraham.monsterassault.utils.Transition;
 
 public class MonsterAssault extends Game {
