@@ -156,8 +156,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
         stage.addActor(topRowLabelTable);
         Gdx.input.setInputProcessor(stage);
         batch.setProjectionMatrix(camera.combined);
-
-        player.setHit(true);
     }
 
     @Override
@@ -297,6 +295,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
         final int currentRound = roundData.getCurrentRound();
         currentRoundLabel.setText("Round " + currentRound);
         musicAndSoundManager.playRoundChangeRound();
+        player.updatePlayerHealth(100);
     }
 
     private void updateEnemiesLabel() {

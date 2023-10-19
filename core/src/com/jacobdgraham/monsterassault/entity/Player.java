@@ -5,10 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Player extends Entity {
 
-    private Texture texture;
     private float health = 100.0f;
     private boolean isHit = false;
-    private float hitDuration = 1.0f;
     private float hitTimer = 0.0f;
 
     public Player(final Texture playerTexture, final float x, final float y, final float width, final float height) {
@@ -19,8 +17,12 @@ public class Player extends Entity {
         return (int) health;
     }
 
-    public void updatePlayerHealth(final float damage) {
-        health += damage;
+    public void updatePlayerHealth(final float difference) {
+        if (difference == 100) {
+            health = 100;
+            return;
+        }
+        health += difference;
     }
 
     public void setHit(boolean isHit) {
@@ -43,7 +45,7 @@ public class Player extends Entity {
     }
 
     public float getHitDuration() {
-        return hitDuration;
+        return 1.0f;
     }
 
     public Color changeHealthLabelColour() {
