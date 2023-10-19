@@ -229,7 +229,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
         }
 
         if (player.getHealth() <= 0) {
-            System.out.println("Player health less than 0");
             monsterAssault.showScreen(stage, new GameOverDiedScreen(monsterAssault));
         }
         if (roundData.getCurrentRound() >= 11 && player.getHealth() > 0) {
@@ -295,7 +294,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
         final int currentRound = roundData.getCurrentRound();
         currentRoundLabel.setText("Round " + currentRound);
         musicAndSoundManager.playRoundChangeRound();
-        player.updatePlayerHealth(100);
+        player.fillPlayerHealth();
     }
 
     private void updateEnemiesLabel() {

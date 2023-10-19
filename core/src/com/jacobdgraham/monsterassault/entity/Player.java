@@ -18,11 +18,11 @@ public class Player extends Entity {
     }
 
     public void updatePlayerHealth(final float difference) {
-        if (difference == 100) {
-            health = 100;
-            return;
-        }
         health += difference;
+    }
+
+    public void fillPlayerHealth() {
+        health = 100;
     }
 
     public void setHit(boolean isHit) {
