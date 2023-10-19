@@ -52,7 +52,11 @@ public class Enemy extends Entity {
                 return damage;
             }
         }
-        return 0;
+        return 0.0f;
+    }
+
+    public boolean isHittingPlayer() {
+        return isPathFindingComplete();
     }
 
     private boolean isPathFindingComplete() {

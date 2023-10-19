@@ -3,7 +3,6 @@ package com.jacobdgraham.monsterassault.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -77,9 +76,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
     private final float enemy_spawn_interval = 2.0f;
     private boolean shouldPlayerMove = false;
     private float touchStartTime = 0;
-
     private MusicAndSoundManager musicAndSoundManager;
-
 
     public GameScreen(MonsterAssault monsterAssault) {
         this.monsterAssault = monsterAssault;
@@ -100,10 +97,12 @@ public class GameScreen extends ScreenAdapter implements Screen {
                 monsterAssault.setGamePaused(true);
             }
         });
+
         if (gameState != null && gameState.getIfValidSavedGameState()) {
             gameState.loadState(this);
             return;
         }
+
         playerTexture = new Texture("PlayerLookingNorth.png");
         bulletTexture = new Texture("Bullet.png");
         tiledMap = new TmxMapLoader().load("MapBuilding.tmx");
@@ -157,6 +156,8 @@ public class GameScreen extends ScreenAdapter implements Screen {
         stage.addActor(topRowLabelTable);
         Gdx.input.setInputProcessor(stage);
         batch.setProjectionMatrix(camera.combined);
+
+        player.setHit(true);
     }
 
     @Override
@@ -184,6 +185,22 @@ public class GameScreen extends ScreenAdapter implements Screen {
         updateEnemiesLabel();
         playerHealthLabel.setColor(player.changeHealthLabelColour());
         playerHealthLabel.setText("Health: " + player.getHealth());
+
+        if (player.isHit()) {
+            player.updateHitTimer(delta); // Update the hit timer
+            float hitAlpha = 1.0f - (player.getHitTimer() / player.getHitDuration());
+            player.setColor(Color.RED.r, Color.RED.g, Color.RED.b, hitAlpha);
+
+            player.render(batch);
+
+            /*
+             Check if the hit effect duration has elapsed
+             */
+            if (player.getHitTimer() >= player.getHitDuration()) {
+                player.setHit(false);
+                player.setColor(Color.WHITE);
+            }
+        }
 
         if (aliveEnemies.isEmpty()) {
             beginNextRound();
@@ -226,7 +243,11 @@ public class GameScreen extends ScreenAdapter implements Screen {
         for (Enemy enemy : aliveEnemies) {
             calculateEnemyPathfindingMovements(enemy);
             processBulletForEnemy(enemy);
-            player.updatePlayerHealth(enemy.dealDamageToPlayer());
+            player.updatePlayerHealth(-(enemy.dealDamageToPlayer()));
+
+            if (enemy.isHittingPlayer()) {
+                player.setHit(true);
+            }
         }
 
         batch.end();

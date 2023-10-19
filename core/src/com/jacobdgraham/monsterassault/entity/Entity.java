@@ -1,5 +1,6 @@
 package com.jacobdgraham.monsterassault.entity;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,6 +16,14 @@ public class Entity {
         this.entitySprite.setSize(width, height);
         this.entitySprite.setPosition(x, y);
         this.boundingBox = new Rectangle(x, y, width, height);
+    }
+
+    public void setColor(float r, float g, float b, float a) {
+        entitySprite.setColor(r, g, b, a);
+    }
+
+    public void setColor(Color color) {
+        entitySprite.setColor(color);
     }
 
     public void setTexture(final Texture entityTexture) {
