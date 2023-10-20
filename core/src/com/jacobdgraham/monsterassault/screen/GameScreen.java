@@ -9,21 +9,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -40,7 +35,6 @@ import com.jacobdgraham.monsterassault.pathfinding.AStarPathFinder;
 import com.jacobdgraham.monsterassault.utils.GameState;
 import com.jacobdgraham.monsterassault.utils.MusicAndSoundManager;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -78,6 +72,9 @@ public class GameScreen extends ScreenAdapter implements Screen {
     private boolean shouldPlayerMove = false;
     private float touchStartTime = 0;
     private MusicAndSoundManager musicAndSoundManager;
+    private Label.LabelStyle playerHealthLabelStyle;
+
+    private BitmapFont playerHealthLabelBitmapFont;
 
     public GameScreen(MonsterAssault monsterAssault) {
         this.monsterAssault = monsterAssault;
@@ -89,16 +86,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
 
     public void show() {
         stage = new Stage(new ScreenViewport());
-        Texture pauseMenuButtonImage = new Texture("PauseMenuButton.png");
-        final Drawable buttonDrawable = new TextureRegionDrawable(new TextureRegion(pauseMenuButtonImage));
-        pauseMenuButton = new ImageButton(buttonDrawable);
-        pauseMenuButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                monsterAssault.setGamePaused(true);
-            }
-        });
-
         if (gameState != null && gameState.getIfValidSavedGameState()) {
             gameState.loadState(this);
             return;
@@ -111,10 +98,10 @@ public class GameScreen extends ScreenAdapter implements Screen {
         collisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("CollisionLayer");
         enemiesLeftLabelFont = new BitmapFont();
         currentRoundLabelFont = new BitmapFont();
-        BitmapFont playerHealthLabelFont = new BitmapFont();
+        playerHealthLabelBitmapFont = new BitmapFont();
         Label.LabelStyle enemiesLeftLabelStyle = new Label.LabelStyle(enemiesLeftLabelFont, Color.RED);
         Label.LabelStyle currentRoundLabelStyle = new Label.LabelStyle(currentRoundLabelFont, Color.RED);
-        Label.LabelStyle playerHealthLabelStyle = new Label.LabelStyle(playerHealthLabelFont, Color.GREEN);
+        Label.LabelStyle playerHealthLabelStyle = new Label.LabelStyle(playerHealthLabelBitmapFont, Color.WHITE);
         final String initialEnemiesLeftButtonText = "Enemies left: 0";
         final String initialCurrentRoundButtonText = "Round: 0";
         final String initialPlayerHealthLabelText = "Health: 0";
@@ -136,7 +123,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
         final float middleOfScreenY = initialScreenHeight / 2 - 16;
         enemiesLeftLabelFont.getData().setScale(4.0f);
         currentRoundLabelFont.getData().setScale(4.0f);
-        playerHealthLabelFont.getData().setScale(4.0f);
+        playerHealthLabelBitmapFont.getData().setScale(4.0f);
         roundData = roundManager.changeRound();
 
         player = new Player(playerTexture,middleOfScreenX/3,middleOfScreenY,32, 32);
@@ -182,7 +169,10 @@ public class GameScreen extends ScreenAdapter implements Screen {
         player.render(batch);
 
         updateEnemiesLabel();
-        playerHealthLabel.setColor(player.changeHealthLabelColour());
+        playerHealthLabelStyle = new Label.LabelStyle();
+        playerHealthLabelStyle.font = playerHealthLabelBitmapFont;
+        playerHealthLabelStyle.fontColor = player.changeHealthLabelColour();
+        playerHealthLabel.setStyle(playerHealthLabelStyle);
         playerHealthLabel.setText("Health: " + player.getHealth());
 
         if (player.isHit()) {

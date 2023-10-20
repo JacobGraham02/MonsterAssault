@@ -2,16 +2,16 @@ package com.jacobdgraham.monsterassault.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -24,6 +24,9 @@ public class GameOverDiedScreen implements Screen {
     private final MonsterAssault monsterAssault;
     private Stage gameOverDiedStage;
     private MusicAndSoundManager musicAndSoundManager;
+    private BitmapFont youDiedLabelBitmapFont;
+
+    private Label youDiedLabel;
 
     public GameOverDiedScreen(MonsterAssault monsterAssaultScreen) {
         monsterAssault = monsterAssaultScreen;
@@ -36,11 +39,20 @@ public class GameOverDiedScreen implements Screen {
         musicAndSoundManager = MusicAndSoundManager.getInstance();
         musicAndSoundManager.playGameOverSound();
 
+        youDiedLabelBitmapFont = new BitmapFont();
+        youDiedLabelBitmapFont.getData().setScale(5.0f);
+        Label.LabelStyle gameOverDiedLabelStyle = new Label.LabelStyle(youDiedLabelBitmapFont, Color.RED);
+
+        final String gameOverDiedScreenLabelText =
+                "You died!";
+
+        youDiedLabel = new Label(gameOverDiedScreenLabelText, gameOverDiedLabelStyle);
+
         final Texture backgroundTexture = new Texture(Gdx.files.internal("EndingScreen.png"));
         final Image backgroundImage = new Image(backgroundTexture);
         backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        final Texture mainMenuButton = new Texture(Gdx.files.internal("MainMenuPlayButton.png"));
+        final Texture mainMenuButton = new Texture(Gdx.files.internal("BackButton.png"));
         final Drawable mainMenuButtonDrawable = new TextureRegionDrawable(new TextureRegion(mainMenuButton));
         final ImageButton mainMenuImageButton = new ImageButton(mainMenuButtonDrawable);
 
@@ -55,6 +67,7 @@ public class GameOverDiedScreen implements Screen {
         final float buttonY = Gdx.graphics.getHeight() / 2f - mainMenuImageButton.getHeight() / 2f;
 
         final Table table = new Table();
+        table.add(youDiedLabel).pad(10f).row();
         table.add(mainMenuImageButton).pad(10f).row();
         table.setPosition(buttonX, buttonY);
 

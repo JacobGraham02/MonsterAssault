@@ -54,13 +54,13 @@ public class Player extends Entity {
     }
 
     public Color changeHealthLabelColour() {
-        Color characterHealthColour = Color.WHITE;
-        if (health > 50.0f && health <= 100.0f) {
-            characterHealthColour = Color.GREEN;
-        } else if (health < 50.0f && health >= 0.0f) {
-            characterHealthColour = Color.ORANGE;
+        if (health >= 50) {
+            return Color.GREEN;
+        } else if (health >= 30) {
+            return Color.ORANGE;
+        } else {
+            return Color.RED;
         }
-        return characterHealthColour;
     }
 
     public void setColor(float r, float g, float b, float a) {
