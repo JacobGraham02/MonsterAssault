@@ -93,8 +93,8 @@ public class MusicAndSoundManager {
     }
 
     private void scheduleRandomZombieGroanSound() {
-        int minimumZombieGroanInterval = 5;
-        int maximumZombieGroanInterval = 10;
+        int minimumZombieGroanInterval = 1;
+        int maximumZombieGroanInterval = 5;
         int zombieGroanInterval = random.nextInt(maximumZombieGroanInterval - minimumZombieGroanInterval) + minimumZombieGroanInterval;
 
         Timer.schedule(new Timer.Task() {

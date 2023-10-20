@@ -130,7 +130,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
         topRowLabelTable.row();
         topRowLabelTable.add(pauseMenuButton);
 
-        camera.setToOrtho(false, (float) (initialScreenWidth/2.5), (float) (initialScreenHeight/2.5));
+        camera.setToOrtho(false, (float) (initialScreenWidth/3.0), (float) (initialScreenHeight/3.0));
         camera.update();
 
         musicAndSoundManager.loadZombieGroans();
