@@ -23,10 +23,6 @@ import com.jacobdgraham.monsterassault.utils.MusicAndSoundManager;
 public class GameOverDiedScreen implements Screen {
     private final MonsterAssault monsterAssault;
     private Stage gameOverDiedStage;
-    private MusicAndSoundManager musicAndSoundManager;
-    private BitmapFont youDiedLabelBitmapFont;
-
-    private Label youDiedLabel;
 
     public GameOverDiedScreen(MonsterAssault monsterAssaultScreen) {
         monsterAssault = monsterAssaultScreen;
@@ -36,17 +32,17 @@ public class GameOverDiedScreen implements Screen {
     public void show() {
         gameOverDiedStage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(gameOverDiedStage);
-        musicAndSoundManager = MusicAndSoundManager.getInstance();
+        MusicAndSoundManager musicAndSoundManager = MusicAndSoundManager.getInstance();
         musicAndSoundManager.playGameOverSound();
 
-        youDiedLabelBitmapFont = new BitmapFont();
+        BitmapFont youDiedLabelBitmapFont = new BitmapFont();
         youDiedLabelBitmapFont.getData().setScale(5.0f);
         Label.LabelStyle gameOverDiedLabelStyle = new Label.LabelStyle(youDiedLabelBitmapFont, Color.RED);
 
         final String gameOverDiedScreenLabelText =
                 "You died!";
 
-        youDiedLabel = new Label(gameOverDiedScreenLabelText, gameOverDiedLabelStyle);
+        Label youDiedLabel = new Label(gameOverDiedScreenLabelText, gameOverDiedLabelStyle);
 
         final Texture backgroundTexture = new Texture(Gdx.files.internal("EndingScreen.png"));
         final Image backgroundImage = new Image(backgroundTexture);

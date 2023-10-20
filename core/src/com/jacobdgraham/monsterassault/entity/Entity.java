@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Entity {
 
-    private Rectangle boundingBox;
+    private final Rectangle boundingBox;
     private Sprite entitySprite;
 
     public Entity(final Texture entityTexture, final float x, final float y, final float width, final float height) {

@@ -32,7 +32,6 @@ import com.jacobdgraham.monsterassault.event.RoundData;
 import com.jacobdgraham.monsterassault.event.RoundManager;
 import com.jacobdgraham.monsterassault.pathfinding.AStarNode;
 import com.jacobdgraham.monsterassault.pathfinding.AStarPathFinder;
-import com.jacobdgraham.monsterassault.utils.GameState;
 import com.jacobdgraham.monsterassault.utils.MusicAndSoundManager;
 
 import java.util.Iterator;
@@ -58,7 +57,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
     public Queue<Enemy> enemies;
     public Queue<Enemy> aliveEnemies;
     public Iterator<Bullet> bulletsIterator;
-    public GameState gameState;
     public ImageButton pauseMenuButton;
     private Label enemiesLeftLabel;
     private Label currentRoundLabel;
@@ -72,7 +70,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
     private boolean shouldPlayerMove = false;
     private float touchStartTime = 0;
     private MusicAndSoundManager musicAndSoundManager;
-    private Label.LabelStyle playerHealthLabelStyle;
 
     private BitmapFont playerHealthLabelBitmapFont;
 
@@ -86,11 +83,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
 
     public void show() {
         stage = new Stage(new ScreenViewport());
-        if (gameState != null && gameState.getIfValidSavedGameState()) {
-            gameState.loadState(this);
-            return;
-        }
-
         playerTexture = new Texture("PlayerLookingNorth.png");
         bulletTexture = new Texture("Bullet.png");
         tiledMap = new TmxMapLoader().load("MapBuilding.tmx");
@@ -124,9 +116,9 @@ public class GameScreen extends ScreenAdapter implements Screen {
         enemiesLeftLabelFont.getData().setScale(4.0f);
         currentRoundLabelFont.getData().setScale(4.0f);
         playerHealthLabelBitmapFont.getData().setScale(4.0f);
-        roundData = roundManager.changeRound();
+        roundData = roundManager.getRoundData();
 
-        player = new Player(playerTexture,middleOfScreenX/3,middleOfScreenY,32, 32);
+        player = new Player(playerTexture,middleOfScreenX/3,middleOfScreenY/2,32, 32);
 
         Table topRowLabelTable = new Table();
         topRowLabelTable.setWidth(Gdx.graphics.getWidth());
@@ -140,6 +132,8 @@ public class GameScreen extends ScreenAdapter implements Screen {
 
         camera.setToOrtho(false, (float) (initialScreenWidth/2.5), (float) (initialScreenHeight/2.5));
         camera.update();
+
+        musicAndSoundManager.loadZombieGroans();
 
         stage.addActor(topRowLabelTable);
         Gdx.input.setInputProcessor(stage);
@@ -169,7 +163,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
         player.render(batch);
 
         updateEnemiesLabel();
-        playerHealthLabelStyle = new Label.LabelStyle();
+        Label.LabelStyle playerHealthLabelStyle = new Label.LabelStyle();
         playerHealthLabelStyle.font = playerHealthLabelBitmapFont;
         playerHealthLabelStyle.fontColor = player.changeHealthLabelColour();
         playerHealthLabel.setStyle(playerHealthLabelStyle);
@@ -223,7 +217,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
             musicAndSoundManager.playCharacterDeathSound();
             monsterAssault.showGameOverDiedScreen();
         }
-        if (roundData.getCurrentRound() > 10 && player.getHealth() > 0) {
+        if (roundManager.getIsGameOver()) {
             monsterAssault.showGameOverSuccessScreen();
         }
 
@@ -247,7 +241,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
         bulletsIterator = bullets.iterator();
         while (bulletsIterator.hasNext()) {
             Bullet bullet = bulletsIterator.next();
-            bullet.move(25); // Move the bullet at a constant speed
+            bullet.move(); // Move the bullet at a constant speed
             bullet.render(batch);
 
             final float screenWidth = Gdx.graphics.getWidth();
@@ -413,20 +407,17 @@ public class GameScreen extends ScreenAdapter implements Screen {
 
     @Override
     public void pause() {
-        gameState = new GameState(this);
         monsterAssault.setGamePaused(true);
     }
 
     @Override
     public void resume() {
-        gameState.loadState(this);
         monsterAssault.setGamePaused(false);
     }
 
     @Override
     public void hide() {
         musicAndSoundManager.pause();
-        gameState = new GameState(this);
     }
 
     @Override

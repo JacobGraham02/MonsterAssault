@@ -18,10 +18,7 @@ import com.jacobdgraham.monsterassault.MonsterAssault;
 public class PauseGameScreen implements Screen {
     private final MonsterAssault monsterAssault;
     private Stage pauseStage;
-
-    private boolean gamePaused = false;
     private Texture backgroundTexture;
-    private Drawable buttonDrawable;
     private ImageButton resumeButton;
     private Image pauseMenuBackground;
 
@@ -37,7 +34,7 @@ public class PauseGameScreen implements Screen {
         pauseMenuBackground.setColor(1,1,1,0.7f);
 
         backgroundTexture = new Texture(Gdx.files.internal("BackButton.png"));
-        buttonDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
+        Drawable buttonDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
         resumeButton = new ImageButton(buttonDrawable);
         resumeButton.setPosition(pauseStage.getWidth()/2,pauseStage.getHeight()/2);
 

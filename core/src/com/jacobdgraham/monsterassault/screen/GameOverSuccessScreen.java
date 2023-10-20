@@ -21,16 +21,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.jacobdgraham.monsterassault.MonsterAssault;
+import com.jacobdgraham.monsterassault.utils.MusicAndSoundManager;
 
 public class GameOverSuccessScreen extends ScreenAdapter implements Screen {
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private final MonsterAssault monsterAssault;
     private Stage stage;
-
-    private BitmapFont youSurvivedLabelBitmapFont;
-
-    private Label youSurvivedLabel;
 
     public GameOverSuccessScreen(MonsterAssault monsterAssaultScreen) {
         monsterAssault = monsterAssaultScreen;
@@ -40,11 +37,12 @@ public class GameOverSuccessScreen extends ScreenAdapter implements Screen {
     public void show() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+        MusicAndSoundManager musicAndSoundManager = MusicAndSoundManager.getInstance();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch = new SpriteBatch();
 
-        youSurvivedLabelBitmapFont = new BitmapFont();
+        BitmapFont youSurvivedLabelBitmapFont = new BitmapFont();
         youSurvivedLabelBitmapFont.getData().setScale(5.0f);
 
         Label.LabelStyle gameOverSuccessLabelStyle = new Label.LabelStyle(youSurvivedLabelBitmapFont, Color.GREEN);
@@ -52,7 +50,9 @@ public class GameOverSuccessScreen extends ScreenAdapter implements Screen {
         final String gameOverSuccessLabelText =
                 "You survived the monsters!";
 
-        youSurvivedLabel = new Label(gameOverSuccessLabelText, gameOverSuccessLabelStyle);
+        musicAndSoundManager.playGameSuccessSound();
+
+        Label youSurvivedLabel = new Label(gameOverSuccessLabelText, gameOverSuccessLabelStyle);
 
         final Texture backgroundTexture = new Texture(Gdx.files.internal("EndingScreen.png"));
         final Image backgroundImage = new Image(backgroundTexture);
@@ -69,7 +69,7 @@ public class GameOverSuccessScreen extends ScreenAdapter implements Screen {
             }
         });
 
-        final float buttonX = Gdx.graphics.getWidth() / 5f - mainMenuImageButton.getWidth() / 5f;
+        final float buttonX = Gdx.graphics.getWidth() / 4f - mainMenuImageButton.getWidth() / 5f;
         final float buttonY = Gdx.graphics.getHeight() / 2f - mainMenuImageButton.getHeight() / 2f;
 
         mainMenuImageButton.addListener(new ClickListener() {

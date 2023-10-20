@@ -2,20 +2,17 @@ package com.jacobdgraham.monsterassault.pathfinding;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.jacobdgraham.monsterassault.pathfinding.AStarNode;
 
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
-import sun.awt.image.ImageWatched;
-
 public class AStarPathFinder {
     private final TiledMapTileLayer nonCollisionLayer;
     private final int tileWidth, tileHeight;
 
-    private PriorityQueue<AStarNode> openList;
-    private LinkedList<AStarNode> path;
+    private final PriorityQueue<AStarNode> openList;
+    private final LinkedList<AStarNode> path;
 
     public AStarPathFinder(TiledMap tiledMap) {
         this.nonCollisionLayer = (TiledMapTileLayer) tiledMap.getLayers().get("NonCollisionLayer");

@@ -1,8 +1,6 @@
 package com.jacobdgraham.monsterassault.screen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -17,10 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -35,20 +30,6 @@ public class HowToPlayScreen implements Screen {
     private final MonsterAssault monsterAssault;
     private Stage stage;
     private BitmapFont howToPlayBitmapFont;
-    private Label introductionHowToPlayScreenLabel;
-
-    private Label movingYourCharacterHowToPlayLabel;
-
-    private Label shootingBulletsHowToPlayLabel;
-
-    private Label gameScreenUILabel;
-
-    private Label roundProgressionSystemLabel;
-
-    private Label futureUpdatesLabel;
-
-    private ScrollPane scrollPane;
-
     private MusicAndSoundManager musicAndSoundManager;
     public HowToPlayScreen(MonsterAssault monsterAssaultScreen) {
         monsterAssault = monsterAssaultScreen;
@@ -57,7 +38,7 @@ public class HowToPlayScreen implements Screen {
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
-        scrollPane = new ScrollPane(null);
+        ScrollPane scrollPane = new ScrollPane(null);
         Gdx.input.setInputProcessor(stage);
         musicAndSoundManager = MusicAndSoundManager.getInstance();
         scrollPane.setSize(Gdx.graphics.getWidth()/2.0f, Gdx.graphics.getHeight() / 2.0f);
@@ -93,12 +74,12 @@ public class HowToPlayScreen implements Screen {
                 "This is only the first iteration of this game. Within the next few months, I intend to add an item shop, repairable barriers, and boss enemies " +
                         "which will spawn every 3-5 rounds";
 
-        introductionHowToPlayScreenLabel = new Label(gameInstructionsIntroductionLabelText, gameInstructionsLabelStyle);
-        movingYourCharacterHowToPlayLabel = new Label(gameInstructionsHowToMoveLabelText, gameInstructionsLabelStyle);
-        shootingBulletsHowToPlayLabel = new Label(gameInstructionsHowToShootLabelText, gameInstructionsLabelStyle);
-        gameScreenUILabel = new Label(gameInstructionsGameLabelText, gameInstructionsLabelStyle);
-        roundProgressionSystemLabel = new Label(gameInstructionsRoundProgressionSystemText, gameInstructionsLabelStyle);
-        futureUpdatesLabel = new Label(gameInstructionsFutureUpdates, gameInstructionsLabelStyle);
+        Label introductionHowToPlayScreenLabel = new Label(gameInstructionsIntroductionLabelText, gameInstructionsLabelStyle);
+        Label movingYourCharacterHowToPlayLabel = new Label(gameInstructionsHowToMoveLabelText, gameInstructionsLabelStyle);
+        Label shootingBulletsHowToPlayLabel = new Label(gameInstructionsHowToShootLabelText, gameInstructionsLabelStyle);
+        Label gameScreenUILabel = new Label(gameInstructionsGameLabelText, gameInstructionsLabelStyle);
+        Label roundProgressionSystemLabel = new Label(gameInstructionsRoundProgressionSystemText, gameInstructionsLabelStyle);
+        Label futureUpdatesLabel = new Label(gameInstructionsFutureUpdates, gameInstructionsLabelStyle);
 
         introductionHowToPlayScreenLabel.setWrap(true);
         movingYourCharacterHowToPlayLabel.setWrap(true);
