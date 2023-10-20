@@ -69,7 +69,8 @@ public class HowToPlayScreen implements Screen {
                         "enemy counter which shows you how many enemies are still alive and trying to kill you. Each enemy takes 4 bullets to kill";
         final String gameInstructionsRoundProgressionSystemText =
                 "In the top left hand corner, there is a counter which indicates the current round you are playing on. For every round, more enemies spawn and " +
-                        "they progressively get faster as the rounds progress. There are a total of 10 rounds";
+                        "they progressively get faster as the rounds progress. There are a total of 10 rounds. Every round, your player regenerates back up" +
+                        "to 100 health points.";
         final String gameInstructionsFutureUpdates =
                 "This is only the first iteration of this game. Within the next few months, I intend to add an item shop, repairable barriers, and boss enemies " +
                         "which will spawn every 3-5 rounds";
