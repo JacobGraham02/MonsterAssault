@@ -9,8 +9,11 @@ public class MusicAndSoundManager {
     private Music music;
     private Sound bulletShootSound;
     private Sound bulletHittingMonsterSound;
-
+    private Sound characterGettingHitSound;
     private Sound roundChangeSound;
+    private Sound gameOverSound;
+
+    private Sound characterDyingSound;
     private static MusicAndSoundManager instance;
 
     public MusicAndSoundManager() {
@@ -18,6 +21,9 @@ public class MusicAndSoundManager {
         loadBulletSound();
         loadBulletHitMonsterSound();
         loadRoundChangeSound();
+        loadGuyGettingHitSound();
+        loadGameOverSound();
+        loadGuyDeathSound();
     }
 
     public static MusicAndSoundManager getInstance() {
@@ -28,30 +34,39 @@ public class MusicAndSoundManager {
     }
 
     private void loadLoopingGameAmbientMusic() {
-        FileHandle fileHandle = Gdx.files.internal("CreepyAmbientMusic.wav");
-        music = Gdx.audio.newMusic(fileHandle);
+        FileHandle fileHandleAmbientMusic = Gdx.files.internal("CreepyAmbientMusic.wav");
+        music = Gdx.audio.newMusic(fileHandleAmbientMusic);
         music.setLooping(true);
     }
 
     private void loadBulletSound() {
-        FileHandle fileHandle = Gdx.files.internal("PistolShootSound.wav");
-        bulletShootSound = Gdx.audio.newSound(fileHandle);
+        FileHandle fileHandleShootSound = Gdx.files.internal("PistolShootSound.wav");
+        bulletShootSound = Gdx.audio.newSound(fileHandleShootSound);
     }
 
     private void loadBulletHitMonsterSound() {
-        FileHandle fileHandle = Gdx.files.internal("PistolBulletHittingFlesh.wav");
-        bulletHittingMonsterSound = Gdx.audio.newSound(fileHandle);
+        FileHandle fileHandleBulletHittingFlesh = Gdx.files.internal("ZombieHit.wav");
+        bulletHittingMonsterSound = Gdx.audio.newSound(fileHandleBulletHittingFlesh);
     }
 
     private void loadRoundChangeSound() {
-        FileHandle fileHandle = Gdx.files.internal("RoundChangeSound.wav");
-        roundChangeSound = Gdx.audio.newSound(fileHandle);
+        FileHandle fileHandleRoundChange = Gdx.files.internal("RoundChangeSound.wav");
+        roundChangeSound = Gdx.audio.newSound(fileHandleRoundChange);
     }
 
-    public void setLooping(final boolean looping) {
-        if (music != null) {
-            music.setLooping(looping);
-        }
+    private void loadGuyGettingHitSound() {
+        FileHandle fileHandleCharacterIsHit = Gdx.files.internal("CharacterHurt.wav");
+        characterGettingHitSound = Gdx.audio.newSound(fileHandleCharacterIsHit);
+    }
+
+    private void loadGameOverSound() {
+        FileHandle fileHandleGameOver = Gdx.files.internal("GameOver.wav");
+        gameOverSound = Gdx.audio.newSound(fileHandleGameOver);
+    }
+
+    private void loadGuyDeathSound() {
+        FileHandle fileHandleGuyDeath = Gdx.files.internal("CharacterDeathCry.wav");
+        characterDyingSound = Gdx.audio.newSound(fileHandleGuyDeath);
     }
 
     public void play() {
@@ -63,18 +78,6 @@ public class MusicAndSoundManager {
     public void pause() {
         if (music != null && music.isPlaying()) {
             music.pause();
-        }
-    }
-
-    public void resume() {
-        if (music != null && !music.isPlaying()) {
-            music.play();
-        }
-    }
-
-    public void stop() {
-        if (music != null) {
-            music.stop();
         }
     }
 
@@ -93,6 +96,24 @@ public class MusicAndSoundManager {
     public void playRoundChangeRound() {
         if (roundChangeSound != null) {
             roundChangeSound.play();
+        }
+    }
+
+    public void playGuyGettingHitSound() {
+        if (characterGettingHitSound != null) {
+            characterGettingHitSound.play();
+        }
+    }
+
+    public void playGameOverSound() {
+        if (gameOverSound != null) {
+            gameOverSound.play();
+        }
+    }
+
+    public void playCharacterDeathSound() {
+        if (characterDyingSound != null) {
+            characterDyingSound.play();
         }
     }
 

@@ -18,23 +18,23 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.jacobdgraham.monsterassault.MonsterAssault;
+import com.jacobdgraham.monsterassault.utils.MusicAndSoundManager;
 
-public class GameOverDiedScreen extends ScreenAdapter implements Screen {
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
+public class GameOverDiedScreen implements Screen {
     private final MonsterAssault monsterAssault;
-    private Stage stage;
+    private Stage gameOverDiedStage;
+    private MusicAndSoundManager musicAndSoundManager;
+
     public GameOverDiedScreen(MonsterAssault monsterAssaultScreen) {
         monsterAssault = monsterAssaultScreen;
     }
 
     @Override
     public void show() {
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch = new SpriteBatch();
+        gameOverDiedStage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(gameOverDiedStage);
+        musicAndSoundManager = MusicAndSoundManager.getInstance();
+        musicAndSoundManager.playGameOverSound();
 
         final Texture backgroundTexture = new Texture(Gdx.files.internal("EndingScreen.png"));
         final Image backgroundImage = new Image(backgroundTexture);
@@ -58,8 +58,8 @@ public class GameOverDiedScreen extends ScreenAdapter implements Screen {
         table.add(mainMenuImageButton).pad(10f).row();
         table.setPosition(buttonX, buttonY);
 
-        stage.addActor(backgroundImage);
-        stage.addActor(table);
+        gameOverDiedStage.addActor(backgroundImage);
+        gameOverDiedStage.addActor(table);
     }
 
     @Override
@@ -67,15 +67,13 @@ public class GameOverDiedScreen extends ScreenAdapter implements Screen {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.setProjectionMatrix(camera.combined);
-        stage.act(delta);
-        stage.draw();
+        gameOverDiedStage.act(delta);
+        gameOverDiedStage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        camera.setToOrtho(false, width, height);
-        camera.update();
+
     }
 
     @Override
@@ -95,8 +93,7 @@ public class GameOverDiedScreen extends ScreenAdapter implements Screen {
 
     @Override
     public void dispose() {
-        batch.dispose();
-        stage.dispose();
+        gameOverDiedStage.dispose();
         Gdx.input.setInputProcessor(null);
     }
 }

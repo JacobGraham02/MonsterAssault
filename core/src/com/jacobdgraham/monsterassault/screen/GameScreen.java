@@ -40,6 +40,7 @@ import com.jacobdgraham.monsterassault.pathfinding.AStarPathFinder;
 import com.jacobdgraham.monsterassault.utils.GameState;
 import com.jacobdgraham.monsterassault.utils.MusicAndSoundManager;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -216,7 +217,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
 
         if (Gdx.input.isTouched()) {
             float touchDuration = (TimeUtils.nanoTime() / 1000000000.0f) - touchStartTime;
-            float tapThreshold = 0.05f;
+            float tapThreshold = 0.1f;
             if (touchDuration >= tapThreshold) {
                 shouldPlayerMove = true;
                 calculatePlayerMovement();
@@ -229,10 +230,11 @@ public class GameScreen extends ScreenAdapter implements Screen {
         }
 
         if (player.getHealth() <= 0) {
-            monsterAssault.showScreen(stage, new GameOverDiedScreen(monsterAssault));
+            musicAndSoundManager.playCharacterDeathSound();
+            monsterAssault.showGameOverDiedScreen();
         }
-        if (roundData.getCurrentRound() >= 11 && player.getHealth() > 0) {
-            monsterAssault.showScreen(stage, new GameOverSuccessScreen(monsterAssault));
+        if (roundData.getCurrentRound() > 10 && player.getHealth() > 0) {
+            monsterAssault.showGameOverSuccessScreen();
         }
 
         updateBulletPositions();
@@ -240,9 +242,9 @@ public class GameScreen extends ScreenAdapter implements Screen {
         for (Enemy enemy : aliveEnemies) {
             calculateEnemyPathfindingMovements(enemy);
             processBulletForEnemy(enemy);
-            player.updatePlayerHealth(-(enemy.dealDamageToPlayer()));
 
             if (enemy.isHittingPlayer()) {
+                player.takeDamage(enemy.dealDamageToPlayerOncePerSecond());
                 player.setHit(true);
             }
         }
@@ -273,7 +275,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
                     enemy.takeDamage(bullet.getDamage());
                     bulletsIterator.remove();
                     musicAndSoundManager.playBulletHitSound();
-                    break; // Break the loop after hitting the first enemy
+                    break;
                 }
             }
         }
@@ -441,6 +443,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
     public void dispose() {
         batch.dispose();
         enemiesLeftLabelFont.dispose();
+        super.dispose();
         currentRoundLabelFont.dispose();
         orthogonalTiledMapRenderer.dispose();
         Gdx.input.setInputProcessor(null);

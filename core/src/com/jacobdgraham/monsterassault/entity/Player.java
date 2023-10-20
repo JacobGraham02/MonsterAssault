@@ -2,23 +2,24 @@ package com.jacobdgraham.monsterassault.entity;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.jacobdgraham.monsterassault.utils.MusicAndSoundManager;
 
 public class Player extends Entity {
 
     private float health = 100.0f;
     private boolean isHit = false;
     private float hitTimer = 0.0f;
+    private float lastTimeAppliedPlayerDamage = 0.0f;
+    private final MusicAndSoundManager musicAndSoundManager;
 
     public Player(final Texture playerTexture, final float x, final float y, final float width, final float height) {
         super(playerTexture, x, y, width, height);
+        musicAndSoundManager = MusicAndSoundManager.getInstance();
     }
 
     public int getHealth() {
         return (int) health;
-    }
-
-    public void updatePlayerHealth(final float difference) {
-        health += difference;
     }
 
     public void fillPlayerHealth() {
@@ -46,6 +47,10 @@ public class Player extends Entity {
 
     public float getHitDuration() {
         return 1.0f;
+    }
+
+    public void takeDamage(final float damage) {
+        health -= damage;
     }
 
     public Color changeHealthLabelColour() {

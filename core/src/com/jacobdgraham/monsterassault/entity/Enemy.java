@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.jacobdgraham.monsterassault.pathfinding.AStarNode;
+import com.jacobdgraham.monsterassault.utils.MusicAndSoundManager;
 
 import java.util.LinkedList;
 
@@ -11,16 +12,16 @@ public class Enemy extends Entity {
     private LinkedList<AStarNode> path;
     private AStarNode nextNode;
     private float health = 100.0f;
-    private boolean isDead = false;
     private float damage = 2.5f;
+    private boolean isDead = false;
     private final float moveSpeed;
-    private float lastTimeAppliedPlayerDamage = 0.0f;
-    private float updatePlayerHealthInterval = 1.0f;
+    private final MusicAndSoundManager musicAndSoundManager;
 
     public Enemy(final Texture enemyTexture, float x, float y, float width, float height, float speed) {
         super(enemyTexture, x, y, width, height);
         path = new LinkedList<>();
         moveSpeed = speed;
+        musicAndSoundManager = MusicAndSoundManager.getInstance();
     }
     public void setPath(LinkedList<AStarNode> newPath) {
         if (isDead) {
@@ -34,29 +35,32 @@ public class Enemy extends Entity {
 
     public void takeDamage(final float damage) {
         health -= damage;
+        musicAndSoundManager.playBulletHitSound();
         if (health <= 0) {
             isDead = true;
         }
     }
 
+    private float lastTimeAppliedPlayerDamage = 0.0f;
+
     public float getHealth() {
         return this.health;
     }
 
-    public float dealDamageToPlayer() {
-        if (isPathFindingComplete()) {
-            float currentTime = TimeUtils.nanoTime() / 1000000000.0f;
-
-            if (currentTime - lastTimeAppliedPlayerDamage >= updatePlayerHealthInterval) {
-                lastTimeAppliedPlayerDamage = currentTime;
-                return damage;
-            }
-        }
-        return 0.0f;
-    }
-
     public boolean isHittingPlayer() {
         return isPathFindingComplete();
+    }
+
+    public float dealDamageToPlayerOncePerSecond() {
+        float currentTime = TimeUtils.nanoTime() / 1000000000.0f;
+
+        float updatePlayerHealthInterval = 1.0f;
+        if (currentTime - lastTimeAppliedPlayerDamage >= updatePlayerHealthInterval) {
+            lastTimeAppliedPlayerDamage = currentTime;
+            musicAndSoundManager.playGuyGettingHitSound();
+            return damage;
+        }
+        return 0;
     }
 
     private boolean isPathFindingComplete() {
