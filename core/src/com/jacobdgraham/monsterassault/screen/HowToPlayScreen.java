@@ -65,7 +65,7 @@ public class HowToPlayScreen implements Screen {
                 "You can make your character shoot a bullet by tapping on the screen with your finger. The bullet will shoot in the direction of where your " +
                         "character is facing";
         final String gameInstructionsGameLabelText =
-                "In the top right hand corner of the screen, there is a pause button label where you can pause your game. Additionally, there is a round" +
+                "In the top right hand corner of the screen, there is a round" +
                         "enemy counter which shows you how many enemies are still alive and trying to kill you. Each enemy takes 4 bullets to kill";
         final String gameInstructionsRoundProgressionSystemText =
                 "In the top left hand corner, there is a counter which indicates the current round you are playing on. For every round, more enemies spawn and " +
