@@ -1,7 +1,7 @@
 android {
     namespace "com.jacobdgraham.monsterassault"
     buildToolsVersion "33.0.2"
-    compileSdkVersion 32
+    compileSdkVersion 33
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -20,7 +20,7 @@ android {
     defaultConfig {
         applicationId "com.jacobdgraham.monsterassault"
         minSdkVersion 24
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
     }
