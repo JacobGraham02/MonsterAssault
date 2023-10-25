@@ -12,15 +12,9 @@
         <a href="#getting-started">Getting Started</a>
         <ul>
           <li><a href="#prerequisites">Prerequisites</a></li>
-          <ul>
-            <li><a href="#if-on-windows">If on Windows</a></li>
-            <li><a href="#if-on-macos">If on MacOS</a></li>
-            <li><a href="#if-on-linux">If on Linux</a></li>
-          </ul>
           <li><a href="#installation">Installation</a></li>
         </ul>
      </li>
-     <li><a href="#usage">Usage</a></li>
      <li><a href="#contributing">Contributing</a></li>
      <li><a href="#contact">Contact me</a></li>
     </ol>
