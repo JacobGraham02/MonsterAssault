@@ -30,6 +30,7 @@ import com.jacobdgraham.monsterassault.entity.Enemy;
 import com.jacobdgraham.monsterassault.entity.Player;
 import com.jacobdgraham.monsterassault.event.RoundData;
 import com.jacobdgraham.monsterassault.event.RoundManager;
+import com.jacobdgraham.monsterassault.interfaces.IBulletHitListener;
 import com.jacobdgraham.monsterassault.pathfinding.AStarNode;
 import com.jacobdgraham.monsterassault.pathfinding.AStarPathFinder;
 import com.jacobdgraham.monsterassault.utils.MusicAndSoundManager;
@@ -222,6 +223,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
         }
 
         updateBulletPositions();
+        updateEnemies(delta);
 
         for (Enemy enemy : aliveEnemies) {
             calculateEnemyPathfindingMovements(enemy);
@@ -252,6 +254,13 @@ public class GameScreen extends ScreenAdapter implements Screen {
                 continue;
             }
 
+            bullet.setBulletHitListener(new IBulletHitListener() {
+                @Override
+                public void onBulletHit(Enemy enemy, Bullet bullet) {
+                    handleBulletHit(enemy, bullet);
+                }
+            });
+
             bulletBounds = bullet.getBoundingBox();
             for (Enemy enemy : aliveEnemies) {
                 enemyBounds = new Rectangle(enemy.getX(), enemy.getY(), enemy.getBoundingBoxWidth(), enemy.getBoundingBoxHeight());
@@ -261,6 +270,21 @@ public class GameScreen extends ScreenAdapter implements Screen {
                     musicAndSoundManager.playBulletHitSound();
                     break;
                 }
+            }
+        }
+    }
+
+    private void handleBulletHit(Enemy enemy, Bullet bullet) {
+        enemy.takeDamage(bullet.getDamage());
+        musicAndSoundManager.playBulletHitSound();
+    }
+
+    private void updateEnemies(float delta) {
+        for (Enemy enemy : aliveEnemies) {
+            calculateEnemyPathfindingMovements(enemy);
+            if (enemy.isHittingPlayer()) {
+                player.takeDamage(enemy.dealDamageToPlayerOncePerSecond());
+                player.setHit(true);
             }
         }
     }
