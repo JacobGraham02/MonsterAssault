@@ -1,11 +1,14 @@
 package com.jacobdgraham.monsterassault.entity;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.jacobdgraham.monsterassault.interfaces.IBulletHitListener;
 
 public class Bullet extends Entity {
     private final int damage;
     private final float angle;
     private final int speed;
+
+    private IBulletHitListener bulletHitListener;
 
     public Bullet(final Texture bulletTexture, final float x, final float y, final float width, final float height,
                   final int bulletDamage, final int bulletSpeed, float bulletAngle) {
@@ -13,6 +16,16 @@ public class Bullet extends Entity {
         this.damage = bulletDamage;
         this.speed = bulletSpeed;
         this.angle = bulletAngle;
+    }
+
+    public void setBulletHitListener(IBulletHitListener listener) {
+        this.bulletHitListener = listener;
+    }
+
+    public void notifyHit(Enemy enemy) {
+        if (bulletHitListener != null) {
+            bulletHitListener.onBulletHit(enemy, this);
+        }
     }
 
     public final float getDamage() {
