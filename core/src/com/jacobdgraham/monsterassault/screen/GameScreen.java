@@ -260,17 +260,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
                     handleBulletHit(enemy, bullet);
                 }
             });
-
-            bulletBounds = bullet.getBoundingBox();
-            for (Enemy enemy : aliveEnemies) {
-                enemyBounds = new Rectangle(enemy.getX(), enemy.getY(), enemy.getBoundingBoxWidth(), enemy.getBoundingBoxHeight());
-                if (bulletBounds.overlaps(enemyBounds)) {
-                    enemy.takeDamage(bullet.getDamage());
-                    bulletsIterator.remove();
-                    musicAndSoundManager.playBulletHitSound();
-                    break;
-                }
-            }
         }
     }
 
