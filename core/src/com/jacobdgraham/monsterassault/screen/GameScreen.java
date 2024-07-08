@@ -70,8 +70,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
     private BitmapFont currentRoundLabelFont;
     private float loop_duration = 1.0f;
     private final float enemy_spawn_interval = 2.0f;
-    private boolean shouldPlayerMove = false;
-    private float touchStartTime = 0;
     private MusicAndSoundManager musicAndSoundManager;
     private BitmapFont playerHealthLabelBitmapFont;
 
@@ -277,25 +275,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
             enemy = null;
         }
 
-        if (Gdx.input.justTouched()) {
-            touchStartTime = TimeUtils.nanoTime() / 1000000000.0f; // Convert to seconds
-            shouldPlayerMove = false;
-        }
-
-//        if (Gdx.input.isTouched()) {
-//            float touchDuration = (TimeUtils.nanoTime() / 1000000000.0f) - touchStartTime;
-//            float tapThreshold = 0.1f;
-//            if (touchDuration >= tapThreshold) {
-//                shouldPlayerMove = true;
-//                calculatePlayerMovement();
-//            }
-//        }
-
-        if (!shouldPlayerMove && Gdx.input.justTouched()) {
-            displayPlayerShotBullet();
-            musicAndSoundManager.playBulletShootSound();
-        }
-
         if (player.getHealth() <= 0) {
             musicAndSoundManager.playCharacterDeathSound();
             monsterAssault.showGameOverDiedScreen();
@@ -364,10 +343,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
         initializeRoundChangeEvent();
         initializeRoundEnemies();
         scheduleEnemySpawning();
-
-//        if (Gdx.input.isTouched()) {
-//            calculatePlayerMovement();
-//        }
     }
 
     private void initializeRoundChangeEvent() {
@@ -446,60 +421,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
         }
     }
 
-//    private void calculatePlayerMovement() {
-//        final float touchX = Gdx.input.getX();
-//        final float touchY = Gdx.graphics.getHeight() - Gdx.input.getY();
-//            /*
-//             With libgdx, the origin (0,0) is at the bottom left of the screen, with Y increasing upwards. Because the y coordinate increases upwards from
-//             the bottom of the screen, instead of the top, we must invert the y-coordinate of the touch position, otherwise the sprite will move in the
-//             opposite Y direction of where our finger is.
-//             */
-//        float directionX = touchX - player.getX();
-//        float directionY = touchY - player.getY();
-//
-//        float angle_in_degrees = (float) Math.toDegrees(Math.atan2(directionY, directionX));
-//        player.setRotation(angle_in_degrees - 90);
-//
-//            /*
-//            In game development, a vector is used to determine the position of an object, the speed of the entity moving, the length of the object,
-//            and the distance between two specific positions.
-//            In this instance, a vector is created to determine where the sprite must travel.
-//             */
-//        float length_of_movement_vector = (float) Math.sqrt(directionX * directionX + directionY * directionY);
-//
-//            /*
-//            To avoid division by zero errors when forming a vector
-//             */
-//        if (length_of_movement_vector != 0) {
-//            directionX /= length_of_movement_vector;
-//            directionY /= length_of_movement_vector;
-//        }
-//
-//        final float newXPosition = player.getX() + directionX;
-//        final float newYPosition = player.getY() + directionY;
-//
-//            /*
-//            Calculate the tile coordinates of the player's new position in the collision layer.
-//            */
-//        int tileX = (int) (newXPosition / collisionLayer.getTileWidth());
-//        int tileY = (int) (newYPosition / collisionLayer.getTileHeight());
-//
-//        // Check if the target tile is blocked (e.g., has a property like "blocked" set)
-//        TiledMapTileLayer.Cell cell = collisionLayer.getCell(tileX, tileY);
-//        if (cell != null) {
-//            // Get the tile associated with the cell
-//            TiledMapTile tile = cell.getTile();
-//
-//            // Check if the tile has a property named "blocked" set to true
-//            if (tile.getProperties().containsKey("collision")) {
-//                if (tile.getProperties().get("collision").equals("false")) {
-//                    player.setX(newXPosition);
-//                    player.setY(newYPosition);
-//                }
-//            }
-//        }
-//    }
-
     private void calculatePlayerMovement(float deltaX, float deltaY) {
         float timeStep = Gdx.graphics.getDeltaTime();
         float newX = player.getX() + deltaX * timeStep;
@@ -522,53 +443,8 @@ public class GameScreen extends ScreenAdapter implements Screen {
                 player.setX(newX);
                 player.setY(newY);
             }
-        } else {
-            // Default to allowing movement if no cell is found at the location
-            player.setX(newX);
-            player.setY(newY);
         }
     }
-
-
-//    private void calculatePlayerMovement(float deltaX, float deltaY) {
-//        float newX = player.getX() + deltaX * Gdx.graphics.getDeltaTime();
-//        float newY = player.getY() + deltaY * Gdx.graphics.getDeltaTime();
-//
-//        float directionX = newX - player.getX();
-//        float directionY = newY - player.getY();
-//
-//        float angle_in_degrees = (float) Math.toDegrees(Math.atan2(directionY, directionX));
-//        player.setRotation(angle_in_degrees - 90);
-//
-//            /*
-//            In game development, a vector is used to determine the position of an object, the speed of the entity moving, the length of the object,
-//            and the distance between two specific positions.
-//            In this instance, a vector is created to determine where the sprite must travel.
-//             */
-//        float length_of_movement_vector = (float) Math.sqrt(directionX * directionX + directionY * directionY);
-//
-//            /*
-//            To avoid division by zero errors when forming a vector
-//             */
-//        if (length_of_movement_vector != 0) {
-//            directionX /= length_of_movement_vector;
-//            directionY /= length_of_movement_vector;
-//        }
-//
-//        int tileX = (int) (newX / collisionLayer.getTileWidth());
-//        int tileY = (int) (newY / collisionLayer.getTileHeight());
-//        TiledMapTileLayer.Cell cell = collisionLayer.getCell(tileX, tileY);
-//
-//        if (cell != null) {
-//            TiledMapTile tile = cell.getTile();
-//            if (tile.getProperties().containsKey("collision")) {
-//                if (tile.getProperties().get("collision").equals("false")) {
-//                    player.setX(newX);
-//                    player.setY(newY);
-//                }
-//            }
-//        }
-//    }
 
     @Override
     public void pause() {
