@@ -25,7 +25,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.jacobdgraham.monsterassault.MonsterAssault;
@@ -34,7 +33,6 @@ import com.jacobdgraham.monsterassault.entity.Enemy;
 import com.jacobdgraham.monsterassault.entity.Player;
 import com.jacobdgraham.monsterassault.event.RoundData;
 import com.jacobdgraham.monsterassault.event.RoundManager;
-import com.jacobdgraham.monsterassault.interfaces.IBulletHitListener;
 import com.jacobdgraham.monsterassault.pathfinding.AStarNode;
 import com.jacobdgraham.monsterassault.pathfinding.AStarPathFinder;
 import com.jacobdgraham.monsterassault.utils.MusicAndSoundManager;
@@ -72,18 +70,12 @@ public class GameScreen extends ScreenAdapter implements Screen {
     private final float enemy_spawn_interval = 2.0f;
     private MusicAndSoundManager musicAndSoundManager;
     private BitmapFont playerHealthLabelBitmapFont;
-
-    private Texture playerMovementJoystickBaseTexture;
-    private Texture playerMovementJoystickKnobTexture;
     private Image playerMovementJoystickBaseImage;
     private Image playerMovementJoystickKnobImage;
     private float playerJoystickRadius;
     private boolean playerMovementKnobActive;
     private float joystickStartX;
     private float joystickStartY;
-
-    private Texture playerShootButtonTexture;
-    private Image playerShootButtonImage;
 
     public GameScreen(MonsterAssault monsterAssault) {
         this.monsterAssault = monsterAssault;
@@ -142,13 +134,13 @@ public class GameScreen extends ScreenAdapter implements Screen {
         topRowLabelTable.row();
         topRowLabelTable.add(pauseMenuButton);
 
-        playerMovementJoystickBaseTexture = new Texture("PlayerControls/MonsterAssaultPlayerControlBase.png");
-        playerMovementJoystickKnobTexture = new Texture("PlayerControls/MonsterAssaultPlayerControlKnob.png");
-        playerShootButtonTexture = new Texture("PlayerControls/MonsterAssaultPlayerShootBullet.png");
+        Texture playerMovementJoystickBaseTexture = new Texture("PlayerControls/MonsterAssaultPlayerControlBase.png");
+        Texture playerMovementJoystickKnobTexture = new Texture("PlayerControls/MonsterAssaultPlayerControlKnob.png");
+        Texture playerShootButtonTexture = new Texture("PlayerControls/MonsterAssaultPlayerShootBullet.png");
 
         playerMovementJoystickBaseImage = new Image(playerMovementJoystickBaseTexture);
         playerMovementJoystickKnobImage = new Image(playerMovementJoystickKnobTexture);
-        playerShootButtonImage = new Image(playerShootButtonTexture);
+        Image playerShootButtonImage = new Image(playerShootButtonTexture);
 
         playerJoystickRadius = playerMovementJoystickBaseImage.getWidth() / 2;
         playerMovementJoystickBaseImage.setPosition(50, 50);
@@ -298,13 +290,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
                 bulletsIterator.remove();
                 continue;
             }
-
-            bullet.setBulletHitListener(new IBulletHitListener() {
-                @Override
-                public void onBulletHit(Enemy enemy, Bullet bullet) {
-                    handleBulletHit(enemy, bullet);
-                }
-            });
         }
     }
 
