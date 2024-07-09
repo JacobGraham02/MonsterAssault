@@ -250,22 +250,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
         playerHealthLabel.setStyle(playerHealthLabelStyle);
         playerHealthLabel.setText("Health: " + player.getHealth());
 
-        if (player.isHit()) {
-            player.updateHitTimer(delta); // Update the hit timer
-            float hitAlpha = 1.0f - (player.getHitTimer() / player.getHitDuration());
-            player.setColor(Color.RED.r, Color.RED.g, Color.RED.b, hitAlpha);
-
-            player.render(batch);
-
-            /*
-             Check if the hit effect duration has elapsed
-             */
-            if (player.getHitTimer() >= player.getHitDuration()) {
-                player.setHit(false);
-                player.setColor(Color.WHITE);
-            }
-        }
-
         if (aliveEnemies.isEmpty()) {
             beginNextRound();
             loop_duration = enemies.size*2;
@@ -334,7 +318,9 @@ public class GameScreen extends ScreenAdapter implements Screen {
             calculateEnemyPathfindingMovements(enemy);
             if (enemy.isHittingPlayer()) {
                 player.takeDamage(enemy.dealDamageToPlayerOncePerSecond());
-                player.setHit(true);
+                player.setColor(Color.RED.r, Color.RED.g, Color.RED.b, 1.0f);
+            } else {
+                player.setColor(Color.WHITE);
             }
         }
     }
