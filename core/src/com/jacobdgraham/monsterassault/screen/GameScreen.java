@@ -25,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.jacobdgraham.monsterassault.MonsterAssault;
@@ -233,7 +234,6 @@ public class GameScreen extends ScreenAdapter implements Screen {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        player.render(batch);
 
         updateEnemiesLabel();
         Label.LabelStyle playerHealthLabelStyle = new Label.LabelStyle();
@@ -262,16 +262,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
         updateBulletPositions();
         updateEnemies(delta);
 
-        for (Enemy enemy : aliveEnemies) {
-            calculateEnemyPathfindingMovements(enemy);
-            processBulletForEnemy(enemy);
-
-            if (enemy.isHittingPlayer()) {
-                player.takeDamage(enemy.dealDamageToPlayerOncePerSecond());
-                player.setHit(true);
-            }
-        }
-
+        player.render(batch);
         batch.end();
         stage.draw();
     }
@@ -280,7 +271,7 @@ public class GameScreen extends ScreenAdapter implements Screen {
         bulletsIterator = bullets.iterator();
         while (bulletsIterator.hasNext()) {
             Bullet bullet = bulletsIterator.next();
-            bullet.move(); // Move the bullet at a constant speed
+            bullet.move();
             bullet.render(batch);
 
             final float screenWidth = Gdx.graphics.getWidth();
@@ -288,24 +279,23 @@ public class GameScreen extends ScreenAdapter implements Screen {
 
             if (bullet.getX() < 0 || bullet.getX() > screenWidth || bullet.getY() < 0 || bullet.getY() > screenHeight) {
                 bulletsIterator.remove();
-                continue;
             }
         }
     }
 
-    private void handleBulletHit(Enemy enemy, Bullet bullet) {
-        enemy.takeDamage(bullet.getDamage());
-        musicAndSoundManager.playBulletHitSound();
-    }
-
     private void updateEnemies(float delta) {
-        for (Enemy enemy : aliveEnemies) {
+        Iterator<Enemy> aliveEnemiesIterator = aliveEnemies.iterator();
+        while (aliveEnemiesIterator.hasNext()) {
+            Enemy enemy = aliveEnemiesIterator.next();
+            if (enemy.getHealth() <= 0) {
+                aliveEnemiesIterator.remove();
+            }
             calculateEnemyPathfindingMovements(enemy);
+            processBulletForEnemy(enemy);
+
             if (enemy.isHittingPlayer()) {
                 player.takeDamage(enemy.dealDamageToPlayerOncePerSecond());
                 player.setColor(Color.RED.r, Color.RED.g, Color.RED.b, 1.0f);
-            } else {
-                player.setColor(Color.WHITE);
             }
         }
     }
@@ -350,11 +340,13 @@ public class GameScreen extends ScreenAdapter implements Screen {
     }
 
     private void calculateEnemyPathfindingMovements(Enemy enemy) {
-        if (enemy != null && enemy.getHealth() <= 0) {
-            aliveEnemies.removeValue(enemy, false);
-            enemy = null;
+        if (enemy == null) {
+            return;
         }
-        if (enemy != null) {
+
+        float pathFindUpdateInterval = 1.0f;
+
+        if (TimeUtils.nanoTime() / 1000000000.0f - enemy.getLastPathUpdateTime() > pathFindUpdateInterval) {
             LinkedList<AStarNode> pathToPlayer = pathfinder.findShortestPath(
                     (int) enemy.getX() / 32,
                     (int) enemy.getY() / 32,
@@ -362,11 +354,10 @@ public class GameScreen extends ScreenAdapter implements Screen {
                     (int) player.getY() / 32
             );
             enemy.setPath(pathToPlayer);
-            enemy.move();
+            enemy.setLastPathUpdateTime(TimeUtils.nanoTime() / 1000000000.0f);
         }
-        if (enemy != null) {
-            enemy.render(batch);
-        }
+        enemy.move();
+        enemy.render(batch);
     }
 
     private void initializeRoundEnemies() {

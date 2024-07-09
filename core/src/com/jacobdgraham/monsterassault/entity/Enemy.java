@@ -17,6 +17,8 @@ public class Enemy extends Entity {
     private final float moveSpeed;
     private final MusicAndSoundManager musicAndSoundManager;
 
+    private float lastPathUpdateTime = 0;
+
     public Enemy(final Texture enemyTexture, float x, float y, float width, float height, float speed) {
         super(enemyTexture, x, y, width, height);
         path = new LinkedList<>();
@@ -67,6 +69,13 @@ public class Enemy extends Entity {
         return !isDead && path.isEmpty();
     }
 
+    public void setLastPathUpdateTime(float time) {
+        this.lastPathUpdateTime = time;
+    }
+
+    public float getLastPathUpdateTime() {
+        return this.lastPathUpdateTime;
+    }
 
     public void move() {
         if (isDead) {
